@@ -1,4 +1,4 @@
---PICOhaven v1.0
+--PICOhaven v1.0e
 --by icegoat, Oct '21
 
 --this file is run through a script to strip comments and

@@ -1,22 +1,43 @@
-Developer notes-to-self to accompany PICOhaven source code, to make it easier to remember the big picture if I take a break and come back to it.
+Developer notes-to-self to accompany PICOhaven source code, to make it easier to remember the big picture if I take a break and come back to it. And perhaps they'll be useful to others. I don't claim to be a software engineering expert, this is not my day job :), but I iterated a number of times to get here.
 
-These have not been fully cleaned up so may have some obsolete notes...
+*These have not been fully cleaned up so may include some obsolete notes / global variables no longer used...*
 
 # Running Game
 This file is focused on development notes not play notes. See [README.md](README.md) for a game overview and where and how to play it.
 
 # Development Workflow / Build + Run notes
-- Edit the source code in picohaven###.lua (using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open with its in-code comments)
-- Whenever you want to run it, strip comments and whitespace with a command like:
+
+The game source is primarily split between two files:
+- `picohaven###.lua` -- main game code, about 1700 lines of PICO-8 flavored Lua, plus comments
+- `picohaven###.p8` -- the game 'cart' which has sprites, map, sfx (plus some game strings stored in unused gfx/sfx space via helper cart storedatatocart...), and which includes a .lua file of code
+
+Typical development + test loop:
+- Edit the source code in `picohaven###.lua` (using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open because of its in-code comments, which I didn't want to remove)
+- Whenever you want to run it, strip comments and whitespace with a command like this (suggested on PICO-8 forums):
   -  `./minify_reg.sh picohaven100e.lua minify_rules2.sed > picohaven100e_minify.lua`
-- In PICO-8, load and run picohaven100.p8 (which as of this writing is a cart that just includes sprite, sfx, and game data, and includes the source in picohaven100e_minify.lua). If it's already open you can just hit Ctrl-R (after running the minify_reg command above)
-- INFO at the PICO-8 commandline will show token/character usage
+- In the PICO-8 application, load and run picohaven100.p8 (which as of this writing includes the source from picohaven100e_minify.lua). If it's already open you can just hit Ctrl-R to reload changes (after running the minify_reg command above), which gives a nice quick testing loop
+  - Edit the picohaven###.p8 file when needed to edit graphics, maps, sound, music
+- Note: INFO at the PICO-8 commandline after a change will show token/character usage
 
 # Source code organization & overview
 
-The source code itself has a table of contents for code organization and moderately detailed comments. In addition, some notes I refer back to during development:
+The source code itself has a table of contents for code organization ,and moderately detailed in-code comments. 
 
-## Sprite Flags
+In addition, some notes I refer back to during development:
+
+## Color palette
+
+The game uses a reduced palette of 8 colors (with exceptions for the player and final boss):
+- 0 (black) -- general use
+- 1 (dark blue) -- environment (water)
+- 5 (dark grey) -- general use
+- 6 (light grey) -- text, obstacles, general use
+- 7 (white) -- emphasized text
+- 8 (red) -- health, wound, attacks, warnings, elite enemy eyes, sprite highlights
+- 12 (cyan) -- selection cursor, selected items, button-press prompts, sparing use as sprite highlights
+- 13 (purplish grey) -- treasure, general use
+
+## Sprite Flag Meanings
 
 - 0: actor initialization during initlevel
 - 1: impassible (to move and LOS)
@@ -25,7 +46,7 @@ The source code itself has a table of contents for code organization and moderat
 - 4: triggers immediate action (trap, door)
 - 5: triggers EOT action (treasure)
 - 6: edge of room (unfog up to this border)
-- 7: is doorway
+- 7: is doorway (trigger door open at EOT)
 
 ## Gameflow State Machine
 
@@ -34,6 +55,8 @@ Generally, the game uses a state machine to partition different gameplay (i.e. d
 ![state diagram](picohaven_state.png)
 
 However, there's some overhead in coding a new state, especially if its behavior is very similar to other states or only used in one place, so some changing gameplay within states is controlled by global variables (see below for the many global variables that indicate for example the phase of a boss fight, whether the message box is in 'interactive scrolling mode', and so on).
+
+Not included in above: 'scroll message box' temporary state.
 
 ## Global Variables Summary
 
@@ -67,8 +90,6 @@ Global variables and data structures are used liberally to avoid burdening every
 - `bossphase2` -- trigger special phase 2 of boss fight
 - `wongame` -- trigger "reture" option in town
 
-
-
 **animation-related**:
 (the .ox/.sox approach to animation is based on the system seen in the Lazy Dev Academy Roguelike youtube videos)
 - `animt` -- animation timer: set to 0 to initiate animation-only updates that increment animt, until animt=1 
@@ -100,6 +121,8 @@ Global variables and data structures are used liberally to avoid burdening every
   - `descact[]` is a lookup table that maps █ to attack, for example
 - `card[2]` = status (0 = in hand, 1 = discarded, 2 = burned)
 - `card[3]` = title (e.g. "hurl sword")
+
+If I did it again, I'd likely make those each properties (e.g. `card.status` instead of `card[2]`), to make the code more readable when coming back to it after a break, and incidentally saving a few tokens (in PICO-8's token-counting system, a.property uses 2 tokens while a\[property\] uses 3-- a small difference but it adds up).
 
 **Crd "parsed individual card actions" structure**. For example, from the sample `█2➡️3∧` card above:
 - `crd.act, crd.val` -- action and value, e.g. `█,2` for "attack 2" 
@@ -182,6 +205,7 @@ Note that `actor[1]` is initialized to = `p` (the player data structure, with si
 
 ## Sprite "font"
 Various characters outside the standard alphanumeric \[a-z0-9\] encode specific sprites, see `minispr[]`. Example sprites:
+
 ![example sprites](minispr_examples.png)
 
 Letters written in 'puny font' (appear as CAPS in text editor, CHR(65) to CHR(90)):
@@ -202,57 +226,65 @@ For example, "웃" is what PICO-8 displays if you press shift-j, this is CHR(127
 - a.crd: data struct for card currently being played
 - a.init or a.type.init (redundant)
 
----
+# Miscellaneous Other Notes
 
-# Token / resource usage
+## Token / resource usage
 
-During development I regularly ran into resource limits (tokens, characters, compressed size). Keeping some notes here about resource usage (more in notebook)
+During development I regularly ran into resource limits (tokens, characters, compressed size) and had to restructure code or data. Keeping some notes here about resource usage (more in notebook)
 
-## token inventory 2021-08-25 (out of ~7900):
-*=areas to look at for savings?
--  350 (first tab: state machine and some inits)
--  870 (precombat states)
--  1700 (act states)
--  *500 (postcomb states)
--  *1200 (main ui draw)
--  *500 (custom text/box/sprite)
--  300 (misc deck/arr helpers)
--  140 (math helpers)
--  *900 (inits, dbs) -- also 9kchar, 20% compressed size
--  250 (profile)
--  70 (splash)
--  *500 (levelup, upgrades)
--  170 (town)
--  60 (debug, test)
--  360 (A*)
+### token inventory of v1.0e release, 2021-Oct
 
-## token inventory of v1.0e release, 2021-Oct
+Total resource usage vs. PICO-8 platform limits: 
+- `8163 / 8192 tokens`
+- `41356 / 65535 characters` (after stripping comments and whitespace)
+- `15159 / 15616 (97%) compressed bytes` (also after stripping comments and whitespace)
 
-Total resource usage: 
-- 8163 / 8192 tokens
-- 41356 / 65535 characters (after stripping comments and whitespace)
-- 15159 / 15616 compressed characters (97% of compressed size, after stripping comments and whitespace)
+Token and compressed size usage (only including the major contributors to this one), sorted by code organization section:
+| tokens used <br>(/8192) | compressed <br>chars <br>(/15616) | code section |
+| --- | --- | --- |
+| 1159 | 2066 | 6) main UI draw loops and card draw functions |
+| 1073 | 2041 | 4b) player action loop (some of this is also in enemy action loop) |
+|  865 | 1496 | 9) miscellaneous helper functions |
+|  790 | 1674 | 4a) enemy action loop (includes some common functions used in 4b) |
+|  628 | 3538 | 11) inits and databases (substantial strings of data) |
+|  580 | 159 | 3) pre-combat states (new turn, choose cards, etc) |
+|  517 | 1368 | 5) post-combat states (cleanup, etc) |
+|  377 | | 7) custom sprite-based font and print functions |
+|  359 | | 14) levelup, upgrades |
+|  355 | 1283 | 15) town and retirement |
+|  275 | | 18) load/save |
+|  271 | | 17) pathfinding (A*) |
+|  211 | 646 | 1) core game init/update/draw |
+|  200 | | 8) menu-draw and related functions |
+|  129 | | 10) data string -> datastructure parsing + loading |
+|  117 | | 12) profile / character sheet |
+|  102 | | 4) action/combat loop |
+|  99 | | 13) splash screen / intro |
+|  56 | | 2) main game state machine |
+|  0  | | x) pause menu items (deprecated) |
+|  0 | | 16) debugging + testing functions |
 
-Token usage, sorted by code organization section (out of the 8163 tokens / *15159 compressed chars*)
-If there are two numbers (a / *b*), a is token usage and b is compressed char usage-- only listed for large contributors
--  1159 / *2066*: 6) main UI draw loops and card draw functions
--  1073 / *2041*: 4b) player action loop (some of this is also in enemy action loop)
--  865 / *1496*: 9) miscellaneous helper functions
--  790 / *1674*: 4a) enemy action loop (includes some common functions used in 4b)
--  628 / *3538*: 11) inits and databases (substantial strings of data)
--  580 / *1596*: 3) pre-combat states (new turn, choose cards, etc)
--  517 / *1368*: 5) post-combat states (cleanup, etc)
--  377: 7) custom sprite-based font and print functions
--  359: 14) levelup, upgrades
--  355 / *1283*: 15) town and retirement
--  275: 18) load/save
--  271: 17) pathfinding (A*)
--  211 / / *646*: 1) core game init/update/draw
--  200: 8) menu-draw and related functions
--  129: 10) data string -> datastructure parsing + loading
--  117: 12) profile / character sheet
--  102 / ?: 4) action/combat loop
--  99: 13) splash screen / intro
--  56 / ?: 2) main game state machine
--  0 : x) pause menu items (deprecated)
--  0: 16) debugging + testing functions
+### Future resource-shaving ideas
+
+-  Use PICO-8 custom font (available from 0.2.2 on) to include the attack/move/etc icons and save tokens relative to my minispr/printmspr functions... but at cost of more characters and compressed size
+-  Fog-related code
+-  If I develop future chapters, pare down messages (suggest playing chapter 1 first to learn)
+-  Rework the split-string-to-kv-pairs function to only store the key names once if they're the same for every row (doesn't save tokens, but saves some characters)
+-  Encode/hard-code more level data in the DB rather than extracting it from the level at runtime (e.g. player starting location, door locations and # of doors, hard-code coordinates of an area to unfog for each door)? But makes adjusting level maps more annoying. Saves tokens at small cost in characters.
+
+## Dev Log / History
+
+| version | date | estimated hours<br>(tbd from logs) | notes |
+| --- | --- | --- | --- |
+| v0 | July 2021 | 4 | brainstorming, mockups on graph paper and later in image editor to see what kind of UI's even possible within 128 pixels (no code) |
+| v0.1 | Aug 2021 | tbd | first playable prototype of concept (limited animations or text, no regard for duplicated code or efficiency), get first feedback |
+| v0.2 | Sep | tbd<br>(many) | main work: add story, enemies, animations, music, special actions, items, save/load, iterate on game, refactor code to share more, it seems "mostly done" (ha!) |
+| v0.9 | Oct 12 | tbd<br>(many) | self-playtesting and iteration on details (animations, sound), debugging, story, upgrades/balance, enemies. in-cart data storage and refactors to reduce size below limits. perhaps feature-and-content complete? release to a few folks for feedback |
+| v1.0 | Oct 20 | 15 | integrate first feedback, improve enemy pathfinding, other improvements and debugging, first public release on BBS! |
+| v1.0b | Oct ?? | 3 | more feedback-based revisions: more info messages, improve hand selection UI |
+| v1.0d | Oct 28 | 6 | even more tutorial-related messages, "undo" option for move/attacks before confirmed, screen shake on "*2" mod |
+| v1.0e | Nov 3 | 10 | almost no functional changes: add more detailed code comments, documentation, organization, read through all code and clean up. more time than expected! |
+
+**Estimated total time spent on this project**
+
+tbd, maybe I'll see if the PICO-8 backup logs give me an idea... this was on and off in the background over the course of three months. Some weeks this was 2-3 evenings/week, and then there were periods of 1-2 weeks at a time where I didn't touch it.
