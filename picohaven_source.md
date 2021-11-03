@@ -274,17 +274,17 @@ Token and compressed size usage (only including the major contributors to this o
 
 ## Dev Log / History
 
-| version | date | estimated hours<br>(tbd from logs) | notes |
+| version | date | estimated hours<br>(not tracked) | notes |
 | --- | --- | --- | --- |
 | v0 | July 2021 | 4 | brainstorming, mockups on graph paper and later in image editor to see what kind of UI's even possible within 128 pixels (no code) |
-| v0.1 | Aug 2021 | tbd | first playable prototype of concept (limited animations or text, no regard for duplicated code or efficiency), get first feedback |
-| v0.2 | Sep | tbd<br>(many) | main work: add story, enemies, animations, music, special actions, items, save/load, iterate on game, refactor code to share more, it seems "mostly done" (ha!) |
-| v0.9 | Oct 12 | tbd<br>(many) | self-playtesting and iteration on details (animations, sound), debugging, story, upgrades/balance, enemies. in-cart data storage and refactors to reduce size below limits. perhaps feature-and-content complete? release to a few folks for feedback |
-| v1.0 | Oct 20 | 15 | integrate first feedback, improve enemy pathfinding, other improvements and debugging, first public release on BBS! |
+| v0.1 | Aug 2021 | 15? | first playable prototype of concept (limited animations or text, no regard for duplicated code or efficiency), get first feedback |
+| v0.2 | Sep | 60? | main work: add story, enemies, animations, music, special actions, items, save/load, iterate on game, refactor code to reduce size, it seems "mostly done except for some polish" (ha!) |
+| v0.9 | Oct 12 | 40? | self-playtesting and iteration on details, more debugging, story, upgrades/balance, enemies. in-cart data storage and refactors to reduce size below limits. perhaps feature-and-content complete? release to a few folks for feedback |
+| v1.0 | Oct 20 | 10 | updates based on feedback, improve enemy pathfinding, other improvements and debugging, first public release on BBS! |
 | v1.0b | Oct ?? | 3 | more feedback-based revisions: more info messages, improve hand selection UI |
 | v1.0d | Oct 28 | 6 | even more tutorial-related messages, "undo" option for move/attacks before confirmed, screen shake on "*2" mod |
 | v1.0e | Nov 3 | 10 | almost no functional changes: add more detailed code comments, documentation, organization, read through all code and clean up. more time than expected! |
 
-**Estimated total time spent on this project**
+**Estimated time spent on this project**
 
-tbd, maybe I'll see if the PICO-8 backup logs give me an idea... this was on and off in the background over the course of three months. Some weeks this was 2-3 evenings/week, and then there were periods of 1-2 weeks at a time where I didn't touch it.
+I'd guess in the range of 150 hours (including learning, reading, poking around with music and graphics, and actually playing it), but it's hard to know. This was on and off in the background over the course of three months, plus some extra time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
