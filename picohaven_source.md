@@ -6,7 +6,7 @@ These have not been fully cleaned up so may have some obsolete notes...
 This file is focused on development notes not play notes. See [README.md](README.md) for a game overview and where and how to play it.
 
 # Development Workflow / Build + Run notes
-- Edit picohaven###.lua (in VScode or another external editor-- it is too large for the PICO-8 built-in editor to open with its in-code comments)
+- Edit the source code in picohaven###.lua (using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open with its in-code comments)
 - Whenever you want to run it, strip comments and whitespace with a command like:
   -  `./minify_reg.sh picohaven100e.lua minify_rules2.sed > picohaven100e_minify.lua`
 - In PICO-8, load and run picohaven100.p8 (which as of this writing is a cart that just includes sprite, sfx, and game data, and includes the source in picohaven100e_minify.lua). If it's already open you can just hit Ctrl-R (after running the minify_reg command above)

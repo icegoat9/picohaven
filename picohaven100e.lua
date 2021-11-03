@@ -11,8 +11,8 @@
 --instructions, updates, and web-playable version:
 -- https://www.lexaloffle.com/bbs/?tid=45105
 
---this file, related files, license, etc are in the
--- github repo: (to be added)
+--this file and related files and dev notes are available in a
+-- github repo: https://github.com/icegoat9/picohaven
 
 ---- Code organization:
 ----- 1) core game init/update/draw
