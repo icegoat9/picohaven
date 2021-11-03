@@ -287,4 +287,4 @@ Token and compressed size usage (only including the major contributors to this o
 
 **Estimated time spent on this project**
 
-I'd guess in the range of 150 hours (including learning, reading, poking around with music and graphics, and actually playing it), but it's hard to know. This was on and off in the background over the course of three months, plus some extra time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
+I'd guess in the range of 150-200 hours (including learning, reading, poking around with music and graphics, and actually playing it), but it's hard to know. This was on and off in the background over the course of three months, plus some extra time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
