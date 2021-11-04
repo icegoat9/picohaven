@@ -2408,7 +2408,7 @@ function initsplash()
   _updstate,_drwstate=_updsplash,_drawsplash  
   splashmenu={"start new game"}
   --selx,sely=1,1 --not needed as set in changestate()
-  if (dget(0)==0) add(splashmenu,"continue game",1)
+  if (dget(0)==1) add(splashmenu,"continue game",1)
 end
 
 function _updsplash()
