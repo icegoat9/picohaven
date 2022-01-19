@@ -11,11 +11,13 @@ PICOhaven is a small tactical card-based dungeon crawler / light solo RPG for th
 
 The simplest option is on the web, on the PICO-8 BBS at: https://www.lexaloffle.com/bbs/?tid=45105
 
-You can also download the files from this repo and load picohaven###.p8.png into the PICO-8 desktop application if you own it, on Windows/Mac/Linux/Raspberry Pi, or load it onto a PICO-8 compatible retrogaming arcade or handheld such as the [Pimoroni Picade](https://shop.pimoroni.com/products/picade), [Gameforce handheld](https://gameforce.fun/products/gameforce-handheld), or many other devices.
+Alternately, you can download executables from itch.io at: https://icegoat9.itch.io/picohaven (I have only tested the Mac executable so far)
+
+You can also download the source files from this repo and load picohaven###.p8.png into the PICO-8 desktop application if you own it, on Windows/Mac/Linux/Raspberry Pi, or load that onto a PICO-8 compatible retrogaming arcade or handheld such as the [Pimoroni Picade](https://shop.pimoroni.com/products/picade), [Gameforce handheld](https://gameforce.fun/products/gameforce-handheld), or other devices.
 
 ## How to Play / Rules
 
-For now, see the play instructions on the PICO-8 BBS at: https://www.lexaloffle.com/bbs/?tid=45105
+For now, see the more detailed play instructions on the PICO-8 BBS at: https://www.lexaloffle.com/bbs/?tid=45105
 
 # Source Code + Development Documentation
 
