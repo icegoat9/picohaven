@@ -11,13 +11,14 @@ The game source is primarily split between two files:
 - `picohaven###.lua` -- main game code, about 1700 lines of PICO-8 flavored Lua, plus comments
 - `picohaven###.p8` -- the game 'cart' which has sprites, map, sfx (plus some game strings stored in unused gfx/sfx space via helper cart storedatatocart...), and which includes a .lua file of code
 
-Typical development + test loop:
+My typical development + test loop:
 - Edit the source code in `picohaven###.lua` (using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open because of its in-code comments, which I didn't want to remove)
-- Whenever you want to run it, strip comments and whitespace with a command like this (suggested on PICO-8 forums):
+- Whenever you want to run it, because the base code is far over the compressed size limit, strip comments and whitespace with a command like this (suggested on [the PICO-8 forums](https://www.lexaloffle.com/bbs/?pid=72975#p)):
   -  `./minify_reg.sh picohaven100e.lua minify_rules2.sed > picohaven100e_minify.lua`
-- In the PICO-8 application, load and run picohaven100.p8 (which as of this writing includes the source from picohaven100e_minify.lua). If it's already open you can just hit Ctrl-R to reload changes (after running the minify_reg command above), which gives a nice quick testing loop
-  - Edit the picohaven###.p8 file when needed to edit graphics, maps, sound, music
-- Note: INFO at the PICO-8 commandline after a change will show token/character usage
+  -  I try to not do other minification to keep the file readable-- comment and whitespace stripping is currently just _barely_ enough
+- In the PICO-8 application, load and run picohaven100.p8 (which as of this writing just includes the source from picohaven100e_minify.lua, plus contains the sprites, sfx, map, and so on). If it's already open you can just hit Ctrl-R to reload changes (after running the minify_reg command above), which gives a nice quick testing loop
+  - Edit the picohaven###.p8 file when needed to edit graphics, maps, sound, music.
+- Note: INFO at the PICO-8 commandline after a change will show token/character usage including the #included Lua
 
 # Source code organization & overview
 
@@ -204,19 +205,22 @@ Note that `actor[1]` is initialized to = `p` (the player data structure, with si
 - `minispr` -- maps special characters to sprites to display instead (in printmspr()), e.g. Shift-A special character = "attack" option, also see `sh()` and the Sprite "font" notes below:
 
 ## Sprite "font"
-Various characters outside the standard alphanumeric \[a-z0-9\] encode specific sprites, see `minispr[]`. Example sprites:
+Various characters outside the standard alphanumeric \[a-z0-9\] encode specific sprites to be mixed in with text, see `minispr[]` and `printmspr()`. 
+
+The most common of these are Shift+letter (i.e. replacement for the extended double-width characters, CHR(128) to CHR(153)):
+- [i]tem, [p]ush, [a]ttack, [m]ove, [h]eart, [g]old, [j]ump, 
+- [r]ange, [s]hield, [w]ound, [b]urn, [z]stun, [l]oot
+
+With sprites shown below:
 
 ![example sprites](minispr_examples.png)
 
-Letters written in 'puny font' (appear as CAPS in text editor, CHR(65) to CHR(90)):
+For example, "웃" is what PICO-8 displays if you press shift-j, this is CHR(127) and is used to symbolize "jump" or to print the "jump sprite", whose number is stored in minispr["웃"]
+
+In addition, some letters written in 'puny font' (appear as CAPS in text editor, CHR(65) to CHR(90)) have special meanings:
 - [A]..[H] for AoE sprites #21-28 (only H used to date, for AoE pattern #8, '8 adjacent cells include diagonals'...)
 - [I]..[M] for item sprites (created but not currently used: [N]..[O] for 'used item' sprites)
 - [U],[D], [X] for simplified arrows (7x5) and ❎ (7x7)
-
-Shift+letter (i.e. replacement for the extended double-width characters, CHR(128) to CHR(153)):
-- [a]ttack, [m]ove, [h]eart, [g]old, [j]ump, [r]ange, 
-- [s]hield, [w]ound, [b]urn, [z]stun, [l]oot, [p]ush, [i]tem
-For example, "웃" is what PICO-8 displays if you press shift-j, this is CHR(127) and is used to symbolize "jump" or to print the "jump sprite", whose number is stored in minispr["웃"]
 
 ## enemy and player cards-to-play data structures
 - p.crds (array of 4 playable full cards, init and all)
