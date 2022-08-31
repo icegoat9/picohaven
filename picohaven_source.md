@@ -13,18 +13,18 @@ The game source is primarily split between two files:
 
 My typical development + test loop (v1):
 - Edit the source code in `picohaven100e.lua` using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open because of its in-code comments, which I didn't want to remove
-- Whenever you want to run it, because the base code is far over the compressed size limit, strip comments and whitespace with a command like this (suggested on [the PICO-8 forums](https://www.lexaloffle.com/bbs/?pid=72975#p)):
+- Whenever I want to run it, because the base code is far over the compressed size limit, strip comments and whitespace with a command like this (suggested on [the PICO-8 forums](https://www.lexaloffle.com/bbs/?pid=72975#p)):
   -  `./minify_reg.sh picohaven100e.lua minify_rules2.sed > picohaven100e_minify.lua`
   -  I try to not do other minification to keep the file readable-- comment and whitespace stripping is currently just _barely_ enough
 - In the PICO-8 application, load and run `picohaven100.p8` (which as of this writing just includes the source from `picohaven100e_minify.lua`, plus contains the sprites, sfx, map, and so on). If it's already open you can just hit Ctrl-R to reload changes (after running the minify_reg command above), which gives a nice quick testing loop
   - Edit this .p8 file when needed to edit graphics, maps, sound, music.
 - Core game data (player cards, upgrades, items, monster decks and stats) is stored in strings in the .lua source, but I have a helped spreadsheet that lets me adjust all the numbers and abilities, then concatenate them into a string I copy and paste into the .lua source
-- Story text (shown before/after each level) wouldn't fit within the cart limits, originally... so it's now stored in a compressed binary format in unused space in the cart's sprite and sound data, using separate program `storedatatocart4r.p8`. I edit the story text in a spreadsheet which concatenates it into a specific format for storedatatocart.p8, then run that to overwrite those parts of cart memory
+- Story text (shown before/after each level) wouldn't fit within the cart limits, originally... so it's now stored in a binary format in unused space in the cart's sprite and sound data, using separate program `storedatatocart4r.p8`. I edit the story text in a spreadsheet which concatenates it into a specific format for storedatatocart.p8, then run that to overwrite those parts of the picohaven###.p8 cart
 - Note: INFO at the PICO-8 commandline after a change will show token/character usage including the #included Lua
 
 Revised v1.1 workflow:
-- As above, but use minifier Shrinko-8 instead of my shell/.sed script, e.g. `shrinko8.py picohaven_v11a.lua picohaven_v11a_sminify.lua --minify --preserve "*.*"`
-- The most current versions of source are picohaven_v11a.lua and picohaven_v11.p8
+- As above, but using minifier Shrinko-8 instead of my shell/.sed script, e.g. `shrinko8.py picohaven_v11a.lua picohaven_v11a_sminify.lua --minify --preserve "*.*"` (that minified code is no longer readable, unfortunately)
+- The most current versions of the source are picohaven_v11a.lua and picohaven_v11.p8
 
 # Source code organization & overview
 
