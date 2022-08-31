@@ -207,6 +207,8 @@ Note that `actor[1]` is initialized to = `p` (the player data structure, with si
 ## Sprite "font"
 Various characters outside the standard alphanumeric \[a-z0-9\] encode specific sprites to be mixed in with text, see `minispr[]` and `printmspr()`. 
 
+NOTE: As of v1.1 (Sep 2022), this approach has been replaced by a PICO-8 custom font poked into memory and some of this section is obsolete when it comes ot the details. The printmspr() function has been updated (see it for details), but I will update documentation at some point...
+
 The most common of these are Shift+letter (i.e. replacement for the extended double-width characters, CHR(128) to CHR(153)):
 - [i]tem, [p]ush, [a]ttack, [m]ove, [h]eart, [g]old, [j]ump, 
 - [r]ange, [s]hield, [w]ound, [b]urn, [z]stun, [l]oot
@@ -268,9 +270,18 @@ Token and compressed size usage (only including the major contributors to this o
 |  0  | | x) pause menu items (deprecated) |
 |  0 | | 16) debugging + testing functions |
 
+### revised v1.1 release, 2022-Sep
+
+Under the hood rewrite to use the PICO8 custom font functionality (saved ~120 tokens at the cost of many more characters and larger compressed size), some further code cleanup, new features (added tokens), and use of the Shrinko-8 minifier (saved significant characters and compressed size)
+
+Total resource usage vs. PICO-8 platform limits: 
+- `8023 / 8192 tokens` (even after adding in more tutorial notes and enhancements)
+- `31808 / 65535 characters` (after aggressive minification)
+- `13591 / 15616 (87%) compressed bytes`
+- 
 ### Future resource-shaving ideas
 
--  Use PICO-8 custom font (available from 0.2.2 on) to include the attack/move/etc icons and save tokens relative to my minispr/printmspr functions... but at cost of more characters and compressed size
+-  ~~Use PICO-8 custom font (available from 0.2.2 on) to include the attack/move/etc icons and save tokens relative to my minispr/printmspr functions... but at cost of more characters and compressed size~~
 -  Fog-related code
 -  If I develop future chapters, pare down messages (suggest playing chapter 1 first to learn)
 -  Rework the split-string-to-kv-pairs function to only store the key names once if they're the same for every row (doesn't save tokens, but saves some characters)
@@ -282,13 +293,14 @@ Token and compressed size usage (only including the major contributors to this o
 | --- | --- | --- | --- |
 | v0 | July 2021 | 4 | brainstorming, mockups on graph paper and later in image editor to see what kind of UI's even possible within 128 pixels (no code) |
 | v0.1 | Aug 2021 | 15? | first playable prototype of concept (limited animations or text, no regard for duplicated code or efficiency), get first feedback |
-| v0.2 | Sep | 60? | main work: add story, enemies, animations, music, special actions, items, save/load, iterate on game, refactor code to reduce size, it seems "mostly done except for some polish" (ha!) |
-| v0.9 | Oct 12 | 40? | self-playtesting and iteration on details, more debugging, story, upgrades/balance, enemies. in-cart data storage and refactors to reduce size below limits. perhaps feature-and-content complete? release to a few folks for feedback |
+| v0.2 | Sep | 80? | main work: add story, enemies, animations, music, special actions, items, save/load, iterate on game, refactor code to reduce size, it seems "mostly done except for some polish" (ha!) |
+| v0.9 | Oct 12 | 60? | self-playtesting and iteration on details, more debugging, story, upgrades/balance, enemies. in-cart data storage and refactors to reduce size below limits. perhaps feature-and-content complete? release to a few folks for feedback |
 | v1.0 | Oct 20 | 10 | updates based on feedback, improve enemy pathfinding, other improvements and debugging, first public release on BBS! |
-| v1.0b | Oct ?? | 3 | more feedback-based revisions: more info messages, improve hand selection UI |
+| v1.0b | Oct 24 | 3 | more feedback-based revisions: more info messages, improve hand selection UI |
 | v1.0d | Oct 28 | 6 | even more tutorial-related messages, "undo" option for move/attacks before confirmed, screen shake on "*2" mod |
 | v1.0e | Nov 3 | 10 | almost no functional changes: add more detailed code comments, documentation, organization, read through all code and clean up. more time than expected! |
+| v1.1 | Sep 2022 | 15 | under the hood changes to free up some tokens (P8 custom font), plus more tutorial-related messages and minor enhancements and bugfixes. Partly setting groundwork to work on a "Chapter 2" some day |
 
 **Estimated time spent on this project**
 
-I'd guess in the range of 150-200 hours (including learning, reading, poking around with music and graphics, and actually playing it), but it's hard to know. This was on and off in the background over the course of three months, plus some extra time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
+I'd guess roughly 200 hours (including learning, reading, poking around with music and graphics, and actually playing it over and over), but it's hard to know. This was on and off in the background over the course of three months, plus some additional time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
