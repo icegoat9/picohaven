@@ -213,7 +213,7 @@ Note that `actor[1]` is initialized to = `p` (the player data structure, with si
 ## Sprite "font"
 Various characters outside the standard alphanumeric \[a-z0-9\] encode specific sprites to be mixed in with text, see `minispr[]` and `printmspr()`. 
 
-NOTE: As of v1.1 (Sep 2022), this approach has been replaced by a PICO-8 custom font poked into memory and some of this section is obsolete when it comes ot the details. The printmspr() function has been updated (see it for details), but I will update documentation at some point...
+NOTE: As of v1.1 (Aug 2022), this approach has been replaced by a PICO-8 custom font poked into memory and some of this section is obsolete when it comes to the details. The printmspr() function has been updated (see it for details), but I will update this documentation at some point...
 
 The most common of these are Shift+letter (i.e. replacement for the extended double-width characters, CHR(128) to CHR(153)):
 - [i]tem, [p]ush, [a]ttack, [m]ove, [h]eart, [g]old, [j]ump, 
@@ -278,20 +278,21 @@ Token and compressed size usage (only including the major contributors to this o
 
 ### revised v1.1 release, 2022-Sep
 
-Under the hood rewrite to use the PICO8 custom font functionality (saved ~120 tokens at the cost of many more characters and larger compressed size), some further code cleanup, new features (added tokens), and use of the Shrinko-8 minifier (saved significant characters and compressed size)
+Under the hood rewrite to use the PICO8 custom font functionality (saved ~150 tokens at the cost of many more characters and larger compressed size), some further code cleanup, minor new features (added tokens), and use of the Shrinko-8 minifier (saved significant characters and compressed size)
 
 Total resource usage vs. PICO-8 platform limits: 
-- `8023 / 8192 tokens` (even after adding in more tutorial notes and enhancements)
-- `31808 / 65535 characters` (after aggressive minification)
-- `13591 / 15616 (87%) compressed bytes`
-- 
+- `8031 / 8192 tokens` (even after adding in more tutorial notes and enhancements)
+- `31840 / 65535 characters` (after aggressive minification)
+- `13600 / 15616 (87%) compressed bytes`
+ 
 ### Future resource-shaving ideas
 
 -  ~~Use PICO-8 custom font (available from 0.2.2 on) to include the attack/move/etc icons and save tokens relative to my minispr/printmspr functions... but at cost of more characters and compressed size~~
 -  Fog-related code
--  If I develop future chapters, pare down messages (suggest playing chapter 1 first to learn)
--  Rework the split-string-to-kv-pairs function to only store the key names once if they're the same for every row (doesn't save tokens, but saves some characters)
+-  If I develop future chapters, pare down messages / remove tutorial hints (suggest playing chapter 1 first to learn)
 -  Encode/hard-code more level data in the DB rather than extracting it from the level at runtime (e.g. player starting location, door locations and # of doors, hard-code coordinates of an area to unfog for each door)? But makes adjusting level maps more annoying. Saves tokens at small cost in characters.
+-  More aggressive minification (add code annotations to table keys to preserve, then use shrinko-8 more aggressively) (only saves chars/compressed size, not tokens)
+-  Rework the split-string-to-kv-pairs function to only store the key names once if they're the same for every row (only saves chars/compressed size, not tokens)
 
 ## Dev Log / History
 
@@ -305,7 +306,7 @@ Total resource usage vs. PICO-8 platform limits:
 | v1.0b | Oct 24 | 3 | more feedback-based revisions: more info messages, improve hand selection UI |
 | v1.0d | Oct 28 | 6 | even more tutorial-related messages, "undo" option for move/attacks before confirmed, screen shake on "*2" mod |
 | v1.0e | Nov 3 | 10 | almost no functional changes: add more detailed code comments, documentation, organization, read through all code and clean up. more time than expected! |
-| v1.1 | Sep 2022 | 15 | under the hood changes to free up some tokens (P8 custom font), plus more tutorial-related messages and minor enhancements and bugfixes. Partly setting groundwork to work on a "Chapter 2" some day |
+| v1.1 | Aug 31, 2022 | 15 | under the hood changes to free up some tokens (P8 custom font), plus more tutorial-related messages and minor enhancements and bugfixes. Partly setting groundwork to work on a "Chapter 2" some day |
 
 **Estimated time spent on this project**
 
