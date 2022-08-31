@@ -310,4 +310,4 @@ Total resource usage vs. PICO-8 platform limits:
 
 **Estimated time spent on this project**
 
-I'd guess roughly 200 hours (including learning, reading, poking around with music and graphics, and actually playing it over and over), but it's hard to know. This was on and off in the background over the course of three months, plus some additional time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
+I'd guess somewhere between 150-250 hours (including learning, reading, poking around with music and graphics, and actually playing it over and over), but it's hard to know. This was mostly developed in the background over the course of three months, plus some additional time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
