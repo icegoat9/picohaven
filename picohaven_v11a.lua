@@ -2179,7 +2179,7 @@ function initmspr()
   --minispr=splt3d("█;5;😐;6;♥;7;●;8;웃;9;➡️;10;★;11;∧;12;▒;13;▥;14;⬅️;15;◆;4;H;28;☉;3;I;59;J;60;K;61;L;62;M;63;D;30;U;31;X;29",true)
   --,🅾️=30,❎=31}
   initfont()
-  descact=splt3d("█;atk ;😐;move ;♥;heal ;●;gold ;웃;jump;➡️;@ rng ;⬅️;get all\ntreasure\nwithin\nrange ➡️;★;shld ;∧;wound;▥;stun;▒;burn;H;adjacent",true)
+  descact=splt3d("█;atk ;😐;move ;♥;heal ;●;gold ;웃;jump;➡️;@ rng ;⬅️;get all\ntreasure\nwithin\nrange ➡️;★;shld ;∧;wound;▥;stun;▒;burn;░;adjacent",true)
 end
 
 --lint: func::_init
