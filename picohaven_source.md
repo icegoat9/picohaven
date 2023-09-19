@@ -12,11 +12,11 @@ The game source is primarily split between two files:
 - `picohaven###.p8` -- the game 'cart' which has sprites, map, sfx (plus some game strings stored in unused gfx/sfx space via helper cart storedatatocart...), and which #includes that .lua file of code
 
 My typical development + test loop (v1):
-- Edit the source code in `picohaven100e.lua` using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open because of its in-code comments, which I didn't want to remove
+- Edit the source code in `picohaven###.lua` using VScode or another external editor-- it is too large for the PICO-8 built-in editor to open because of its in-code comments, which I didn't want to remove
 - Whenever I want to run it, because the base code is far over the compressed size limit, strip comments and whitespace with a command like this (suggested on [the PICO-8 forums](https://www.lexaloffle.com/bbs/?pid=72975#p)):
-  -  `./minify_reg.sh picohaven100e.lua minify_rules2.sed > picohaven100e_minify.lua`
+  -  `./minify_reg.sh picohaven_v11a.lua minify_rules2.sed > picohaven_v11a_sminify.lua`
   -  I try to not do other minification to keep the file readable-- comment and whitespace stripping is currently just _barely_ enough
-- In the PICO-8 application, load and run `picohaven100.p8` (which as of this writing just includes the source from `picohaven100e_minify.lua`, plus contains the sprites, sfx, map, and so on). If it's already open you can just hit Ctrl-R to reload changes (after running the minify_reg command above), which gives a nice quick testing loop
+- In the PICO-8 application, load and run `picohaven###.p8` (which as of this writing just includes the source from `picohaven_v11a_sminify.lua`, plus contains the sprites, sfx, map, and so on). If it's already open you can just hit Ctrl-R to reload changes (after running the minify_reg command above), which gives a nice quick testing loop
   - Edit this .p8 file when needed to edit graphics, maps, sound, music.
 - Core game data (player cards, upgrades, items, monster decks and stats) is stored in strings in the .lua source, but I have a helped spreadsheet that lets me adjust all the numbers and abilities, then concatenate them into a string I copy and paste into the .lua source
 - Story text (shown before/after each level) wouldn't fit within the cart limits, originally... so it's now stored in a binary format in unused space in the cart's sprite and sound data, using separate program `storedatatocart4r.p8`. I edit the story text in a spreadsheet which concatenates it into a specific format for storedatatocart.p8, then run that to overwrite those parts of the picohaven###.p8 cart
@@ -46,7 +46,7 @@ The game uses a reduced palette of 8 colors (with exceptions for the player and 
 
 ## Sprite Flag Meanings
 
-- 0: actor initialization during initlevel
+- 0: actor initialization during initlevel (deprecated)
 - 1: impassible (to move and LOS)
 - 2: impassible move (unless jump), allows LOS
 - 3: animated scenery (default: 4 frames)
@@ -59,7 +59,7 @@ The game uses a reduced palette of 8 colors (with exceptions for the player and 
 
 Generally, the game uses a state machine to partition different gameplay (i.e. different update and draw behavior) into different functions, rather than one update function with many if statements or global variables that set behaviors. changestate() changes to a new state, calling its init function, which typically sets the new update and draw functions if needed.
 
-![state diagram](picohaven_state.png)
+![state diagram](docs/picohaven_state.png)
 
 However, there's some overhead in coding a new state, especially if its behavior is very similar to other states or only used in one place, so some changing gameplay within states is controlled by global variables (see below for the many global variables that indicate for example the phase of a boss fight, whether the message box is in 'interactive scrolling mode', and so on).
 
@@ -221,7 +221,7 @@ The most common of these are Shift+letter (i.e. replacement for the extended dou
 
 With sprites shown below:
 
-![example sprites](minispr_examples.png)
+![example sprites](docs/minispr_examples.png)
 
 For example, "웃" is what PICO-8 displays if you press shift-j, this is CHR(127) and is used to symbolize "jump" or to print the "jump sprite", whose number is stored in minispr["웃"]
 
@@ -289,9 +289,9 @@ Total resource usage vs. PICO-8 platform limits:
 
 -  ~~Use PICO-8 custom font (available from 0.2.2 on) to include the attack/move/etc icons and save tokens relative to my minispr/printmspr functions... but at cost of more characters and compressed size~~
 -  Fog-related code
--  If I develop future chapters, pare down messages / remove tutorial hints (suggest playing chapter 1 first to learn)
+-  If I develop future chapters, pare down messages / remove tutorial hints (and suggest playing chapter 1 first to learn)
 -  Encode/hard-code more level data in the DB rather than extracting it from the level at runtime (e.g. player starting location, door locations and # of doors, hard-code coordinates of an area to unfog for each door)? But makes adjusting level maps more annoying. Saves tokens at small cost in characters.
--  More aggressive minification (add code annotations to table keys to preserve, then use shrinko-8 more aggressively) (only saves chars/compressed size, not tokens)
+-  More aggressive minification? (add code annotations to table keys to preserve, then use shrinko-8 more aggressively-- but this only saves chars/compressed size, not tokens which are more often the limit)
 -  Rework the split-string-to-kv-pairs function to only store the key names once if they're the same for every row (only saves chars/compressed size, not tokens)
 
 ## Dev Log / History
@@ -308,6 +308,6 @@ Total resource usage vs. PICO-8 platform limits:
 | v1.0e | Nov 3 | 10 | almost no functional changes: add more detailed code comments, documentation, organization, read through all code and clean up. more time than expected! |
 | v1.1 | Aug 31, 2022 | 15 | under the hood changes to free up some tokens (P8 custom font), plus more tutorial-related messages and minor enhancements and bugfixes. Partly setting groundwork to work on a "Chapter 2" some day |
 
-**Estimated time spent on this project**
+**Time spent on this project**
 
 I'd guess somewhere between 150-250 hours (including learning, reading, poking around with music and graphics, and actually playing it over and over), but it's hard to know. This was mostly developed in the background over the course of three months, plus some additional time on documentation and writeup. Some weeks this was the equivalent of 2-3 evenings/week, but there were weeks I didn't touch it at all.
