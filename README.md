@@ -1,6 +1,6 @@
 # PICOhaven
 
-PICOhaven is a small tactical card-based dungeon crawler / light solo RPG for the [PICO-8 fantasy console](https://www.lexaloffle.com/pico-8.php), inspired by the board game Gloomhaven. It adopts a modified & simplified version of the mechanics used in that game, to fit within the harsh constraints of the PICO-8 environment (16kB code size, 128x128 resolution, etc), and to streamline solo play. It includes a campaign with up to 16 scenarios, 9 character levels with multiple upgrade paths, and a set of items that provide additional customization to gameplay and strategy.
+PICOhaven is a small tactical card-based dungeon crawler / light solo RPG for the [PICO-8 fantasy console](https://www.lexaloffle.com/pico-8.php), inspired by the board game Gloomhaven. It adopts a modified & simplified version of the mechanics used in that game, to fit within the harsh constraints of the PICO-8 environment (only 32kB for code+graphics+sound combined, 128x128 resolution, and so on), and to streamline solo play. It includes a campaign with up to 16 scenarios, 9 character levels with multiple upgrade paths, and a set of items that provide additional customization to gameplay and strategy.
 
 *Note: This is just a free, solo-fan-made project and has no affiliation with Gloomhaven. If you like this type of game I recommend checking out Gloomhaven (and its official video game adaptation) for a fun game with a lot of tactical depth from multi-character cooperative play!*
 
